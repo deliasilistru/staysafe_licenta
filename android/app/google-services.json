@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "798937769368",
+    "project_id": "staysafe-2cbcf",
+    "storage_bucket": "staysafe-2cbcf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:798937769368:android:dce1f89c13a1e53ee3b7ed",
+        "android_client_info": {
+          "package_name": "com.deliasilistru.staysafe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "798937769368-9iffubl8qn180irtejtellg85fv0pisf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.deliasilistru.staysafe",
+            "certificate_hash": "ed2c50f12bcab77bde8948de6207b349a12547e4"
+          }
+        },
+        {
+          "client_id": "798937769368-gb1tq62mbke815s27i1l5s73e61g3ofp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnEOWfcWQKBrav6tLwLUOjRlBtCKntJBM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "798937769368-gb1tq62mbke815s27i1l5s73e61g3ofp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "798937769368-hpg0jqmholol9ifhk4d56ftbjdct1g8r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.deliasilistru.staySafe"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
