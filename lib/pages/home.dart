@@ -93,7 +93,6 @@ class _HomeState extends State<Home> {
 
     currentUser = User.fromDocument(document);
 
-    print(currentUser);
     print(currentUser?.username);
   }
 
@@ -129,12 +128,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: PageView(
         children: <Widget>[
-          LocationMap(),
-          // ActivityFeed(),
-          // ElevatedButton(
-          //   child: Text('Logout'),
-          //   onPressed: logout,
-          // ),
+          ActivityFeed(),
           Alerts(),
           Sos(),
           Search(),
@@ -233,6 +227,19 @@ showProfile(BuildContext context, {required String profileId}) {
     MaterialPageRoute(
       builder: (context) => Profile(
         profileId: profileId,
+      ),
+    ),
+  );
+}
+
+showMap(BuildContext context,
+    {required double latitude_user, required double longitude_user}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => LocationMap(
+        latitude_contact: latitude_user,
+        longitude_contact: longitude_user,
       ),
     ),
   );

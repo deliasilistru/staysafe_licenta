@@ -7,6 +7,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../models/user.dart';
 import '../widgets/header.dart';
 import '../widgets/progress.dart';
+import 'package:location/location.dart';
 
 class Alerts extends StatefulWidget {
   @override
@@ -17,7 +18,7 @@ class _AlertsState extends State<Alerts> {
   getAlertsFeed() async {
     QuerySnapshot snapshot = await contactsAlertsRef
         .doc(currentUser?.id)
-        .collection('alerts')
+        .collection('alertItems')
         .orderBy('timestamp', descending: true)
         .limit(50)
         .get();
@@ -54,12 +55,16 @@ class AlertsItem extends StatelessWidget {
   late final String username;
   late final String userId;
   late final String userProfileImg;
+  late final double latitude;
+  late final double longitude;
   late final Timestamp timestamp;
 
   AlertsItem({
     required this.username,
     required this.userId,
     required this.userProfileImg,
+    required this.latitude,
+    required this.longitude,
     required this.timestamp,
   });
 
@@ -68,6 +73,8 @@ class AlertsItem extends StatelessWidget {
       username: doc['username'],
       userId: doc['userId'],
       userProfileImg: doc['userProfileImg'],
+      latitude: doc['latitude'],
+      longitude: doc['longitude'],
       timestamp: doc['timestamp'],
     );
   }
@@ -82,7 +89,8 @@ class AlertsItem extends StatelessWidget {
         color: Colors.white54,
         child: ListTile(
           title: GestureDetector(
-            onTap: () => showProfile(context, profileId: userId),
+            onTap: () => showMap(context,
+                latitude_user: latitude, longitude_user: longitude),
             child: RichText(
               overflow: TextOverflow.ellipsis,
               text: TextSpan(
@@ -108,7 +116,7 @@ class AlertsItem extends StatelessWidget {
             timeago.format(timestamp.toDate()),
             overflow: TextOverflow.ellipsis,
           ),
-          trailing: Text(''),
+          trailing: Icon(Icons.pin_drop),
         ),
       ),
     );

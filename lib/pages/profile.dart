@@ -103,19 +103,6 @@ class _ProfileState extends State<Profile> {
         .collection('userContacts')
         .doc(widget.profileId)
         .set({});
-    // add activity feed item for that user to notify about new follower (us)
-    // activityFeedRef
-    //     .document(widget.profileId)
-    //     .collection('feedItems')
-    //     .document(currentUserId)
-    //     .setData({
-    //   "type": "follow",
-    //   "ownerId": widget.profileId,
-    //   "username": currentUser.username,
-    //   "userId": currentUserId,
-    //   "userProfileImg": currentUser.photoUrl,
-    //   "timestamp": timestamp,
-    // });
   }
 
   buildProfileHrader() {

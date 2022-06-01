@@ -33,12 +33,18 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+
 	<key>io.flutter.embedded_views_preview</key>
-    <value>YES</value>
+    <true/>
+
     <key>NSLocationWhenInUseUsageDescription</key>
-    <value>This app needs to know your location!</value>
+    <string>This app needs to know your location!</string>
+
     <key>NSLocationAlwaysUsageDescription</key>
-    <value>This app needs to know your location all the time!</value>
+    <string>This app needs to know your location all the time!</string>
+
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>This app needs access to location when open and in the background.</string>
 
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

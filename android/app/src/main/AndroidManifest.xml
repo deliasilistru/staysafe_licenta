@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.deliasilistru.staysafe.staysafe_licenta">
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
    <application
         android:label="staysafe_licenta"
         android:name="${applicationName}"
@@ -30,5 +31,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAMaQbpp9zQ2cNnvTezTK-Zi1b7OAz6pIk"/>
     </application>
 </manifest>

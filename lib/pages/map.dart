@@ -1,36 +1,138 @@
 import 'package:flutter/material.dart';
+import 'package:staysafe_licenta/pages/home.dart';
 import 'package:staysafe_licenta/widgets/progress.dart';
 import '../widgets/header.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'home.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
 
 class LocationMap extends StatefulWidget {
+  late double latitude_contact;
+  late double longitude_contact;
+
+  LocationMap(
+      {required this.latitude_contact, required this.longitude_contact});
   @override
   _LocationMapState createState() => _LocationMapState();
 }
 
 class _LocationMapState extends State<LocationMap> {
-  @override
-  //late GoogleMapController mapController;
+  late GoogleMapController mapController;
+  Map<MarkerId, Marker> markers =
+      <MarkerId, Marker>{}; // CLASS MEMBER, MAP OF MARKS
+  int _markerIdCounter = 1;
 
-  build(context) {
-    return Stack(children: [
-      GoogleMap(
-        initialCameraPosition:
-            CameraPosition(target: LatLng(24.150, -110.32), zoom: 10),
-        // onMapCreated: _onMapCreated,
-        // myLocationEnabled:
-        //     true, // Add little blue dot for device location, requires permission from user
-        // mapType: MapType.hybrid,
-        // trackCameraPosition: true),
-      )
-    ]);
+  double _latitude = 0.1;
+  double _longitude = 0.1;
+
+  Future<void> _updatePosition() async {
+    Position pos = await _determinePosition();
+    setState(() {
+      _latitude = pos.latitude;
+      _longitude = pos.longitude;
+    });
+    _animateToUser(_latitude, _longitude);
   }
 
-  // void _onMapCreated(GoogleMapController controller) {
-  //   setState(() {
-  //     mapController = controller;
-  //   });
-  // }
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    return await Geolocator.getCurrentPosition();
+  }
+
+  void _add() {
+    final int markerCount = markers.length;
+
+    if (markerCount == 12) {
+      return;
+    }
+    final String markerIdVal = 'marker_id_$_markerIdCounter';
+    _markerIdCounter++;
+    final MarkerId markerId = MarkerId(markerIdVal);
+
+    // creating a new MARKER
+    final Marker marker = Marker(
+      markerId: markerId,
+      position: LatLng(widget.latitude_contact, widget.longitude_contact),
+      infoWindow: InfoWindow(title: markerIdVal, snippet: '*'),
+      icon: BitmapDescriptor.defaultMarker,
+    );
+
+    setState(() {
+      markers[markerId] = marker;
+    });
+  }
+
+  build(context) {
+    return Stack(
+      children: [
+        GoogleMap(
+          onMapCreated: _onMapCreated,
+          initialCameraPosition: const CameraPosition(
+            target: LatLng(44.4, 44.4),
+            zoom: 11.0,
+          ),
+
+          myLocationEnabled:
+              true, // Add little blue dot for device location, requires permission from user
+          mapType: MapType.hybrid,
+          markers: markers.values.toSet(),
+          //markers: Set<Marker>.of(markers.values), // YOUR MARKS IN MAP
+        ),
+        // Positioned(
+        //     bottom: 50,
+        //     right: 10,
+        //     child: ElevatedButton(
+        //       child: Icon(Icons.pin_drop),
+        //       onPressed: () => showProfile(context, profileId: currentUserId),
+        //       style: ElevatedButton.styleFrom(
+        //         primary: Colors.green,
+        //       ),
+        //     ))
+      ],
+    );
+  }
+
+  void _onMapCreated(GoogleMapController controller) {
+    _updatePosition();
+    setState(() {
+      mapController = controller;
+    });
+  }
+
+  Future<void> _animateToUser(latitude_user, longitude_user) async {
+    mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: LatLng(latitude_user, longitude_user),
+          zoom: 13.0,
+        ),
+      ),
+    );
+    print(widget.latitude_contact);
+    print(widget.longitude_contact);
+    _add();
+  }
 }
 
 class LocationMapItem extends StatelessWidget {
