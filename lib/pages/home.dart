@@ -9,13 +9,16 @@ import 'package:staysafe_licenta/pages/sos.dart';
 import '../models/user.dart';
 import 'activity_feed.dart';
 import 'alerts.dart';
+import 'global_map.dart';
 import 'map.dart';
+import 'contacts.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final usersRef = FirebaseFirestore.instance.collection('users');
 final contactsRef = FirebaseFirestore.instance.collection('contacts');
 final activityFeedRef = FirebaseFirestore.instance.collection('feed');
 final contactsAlertsRef = FirebaseFirestore.instance.collection('alerts');
+final locationsRef = FirebaseFirestore.instance.collection('locations');
 final DateTime timestamp = DateTime.now();
 User? currentUser;
 
@@ -129,6 +132,7 @@ class _HomeState extends State<Home> {
       body: PageView(
         children: <Widget>[
           ActivityFeed(),
+          //GlobalMap(),
           Alerts(),
           Sos(),
           Search(),
@@ -244,3 +248,14 @@ showMap(BuildContext context,
     ),
   );
 }
+
+// showContacts(BuildContext context) {
+//   Navigator.push(
+//     context,
+//     MaterialPageRoute(
+//       builder: (context) => Contacts(
+//         // userId: userId,
+//       ),
+//     ),
+//   );
+// }

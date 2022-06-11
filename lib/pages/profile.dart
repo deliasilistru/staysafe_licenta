@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:staysafe_licenta/pages/home.dart';
+import 'package:staysafe_licenta/widgets/header_profile.dart';
 import 'package:staysafe_licenta/widgets/progress.dart';
 import '../models/user.dart';
 import '../widgets/header.dart';
@@ -128,7 +129,7 @@ class _ProfileState extends State<Profile> {
                 backgroundImage: CachedNetworkImageProvider(user.photoUrl),
               ),
               Container(
-                padding: EdgeInsets.only(top: 12.0),
+                padding: EdgeInsets.only(top: 20.0),
                 child: Text(
                   user.username,
                   style: TextStyle(
@@ -138,7 +139,7 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(top: 4.0),
+                padding: EdgeInsets.only(top: 10.0),
                 child: Text(
                   user.displayName,
                   style: TextStyle(
@@ -156,45 +157,37 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(top: 12.0),
-                child: Text(
-                  "Age: $age",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
-                ),
-              ),
+                  padding: EdgeInsets.only(top: 12.0),
+                  child: Card(
+                    child: ListTile(
+                      title: Text("Age: $age"),
+                    ),
+                    elevation: 2,
+                  )),
               Container(
-                padding: EdgeInsets.only(top: 12.0),
-                child: Text(
-                  "Height: $height",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
-                ),
-              ),
+                  padding: EdgeInsets.only(top: 12.0),
+                  child: Card(
+                    child: ListTile(
+                      title: Text("Height: $height"),
+                    ),
+                    elevation: 2,
+                  )),
               Container(
-                padding: EdgeInsets.only(top: 12.0),
-                child: Text(
-                  "Hair Color: $hairColor",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
-                ),
-              ),
+                  padding: EdgeInsets.only(top: 12.0),
+                  child: Card(
+                    child: ListTile(
+                      title: Text("Hair Color: $hairColor"),
+                    ),
+                    elevation: 2,
+                  )),
               Container(
-                padding: EdgeInsets.only(top: 12.0),
-                child: Text(
-                  "Eye Color: $eyeColor",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
-                ),
-              ),
+                  padding: EdgeInsets.only(top: 12.0),
+                  child: Card(
+                    child: ListTile(
+                      title: Text("Eye Color: $eyeColor"),
+                    ),
+                    elevation: 2,
+                  )),
             ],
           ),
         );
@@ -205,7 +198,8 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: header(context, titleText: "Profile"),
+      appBar: header_profile(context,
+          titleText: "Profile", removeBackButton: false),
       body: ListView(
         children: <Widget>[
           buildProfileHrader(),

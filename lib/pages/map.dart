@@ -32,7 +32,7 @@ class _LocationMapState extends State<LocationMap> {
       _latitude = pos.latitude;
       _longitude = pos.longitude;
     });
-    _animateToUser(_latitude, _longitude);
+    _animateToUser(widget.latitude_contact, widget.longitude_contact);
   }
 
   Future<Position> _determinePosition() async {
@@ -83,33 +83,25 @@ class _LocationMapState extends State<LocationMap> {
     });
   }
 
-  build(context) {
-    return Stack(
-      children: [
-        GoogleMap(
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: const CameraPosition(
-            target: LatLng(44.4, 44.4),
-            zoom: 11.0,
-          ),
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: header(context, isAppTitle: true, removeBackButton: false),
+      body: Stack(
+        children: [
+          GoogleMap(
+            onMapCreated: _onMapCreated,
+            initialCameraPosition: const CameraPosition(
+              target: LatLng(44.4, 44.4),
+              zoom: 17.0,
+            ),
 
-          myLocationEnabled:
-              true, // Add little blue dot for device location, requires permission from user
-          mapType: MapType.hybrid,
-          markers: markers.values.toSet(),
-          //markers: Set<Marker>.of(markers.values), // YOUR MARKS IN MAP
-        ),
-        // Positioned(
-        //     bottom: 50,
-        //     right: 10,
-        //     child: ElevatedButton(
-        //       child: Icon(Icons.pin_drop),
-        //       onPressed: () => showProfile(context, profileId: currentUserId),
-        //       style: ElevatedButton.styleFrom(
-        //         primary: Colors.green,
-        //       ),
-        //     ))
-      ],
+            myLocationEnabled:
+                true, // Add little blue dot for device location, requires permission from user
+            mapType: MapType.hybrid,
+            markers: markers.values.toSet(),
+          ),
+        ],
+      ),
     );
   }
 
@@ -125,7 +117,7 @@ class _LocationMapState extends State<LocationMap> {
       CameraUpdate.newCameraPosition(
         CameraPosition(
           target: LatLng(latitude_user, longitude_user),
-          zoom: 13.0,
+          zoom: 17.0,
         ),
       ),
     );

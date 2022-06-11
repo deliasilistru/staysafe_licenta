@@ -30,6 +30,7 @@ class _SearchState extends State<Search> {
 
   AppBar buildSearchField() {
     return AppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
       title: TextFormField(
         controller: searchController,
@@ -61,16 +62,6 @@ class _SearchState extends State<Search> {
               'assets/images/search.svg',
               height: orientation == Orientation.portrait ? 300.0 : 200.0,
             ),
-            // Text(
-            //   "Find Users",
-            //   textAlign: TextAlign.center,
-            //   style: TextStyle(
-            //     color: Colors.white,
-            //     fontStyle: FontStyle.italic,
-            //     fontWeight: FontWeight.w600,
-            //     fontSize: 60.0,
-            //   ),
-            // )
           ],
         ),
       ),
@@ -99,7 +90,8 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor.withOpacity(0.8),
+      //backgroundColor: Theme.of(context).primaryColor.withOpacity(0.8),
+      backgroundColor: Colors.white,
       appBar: buildSearchField(),
       body:
           searchResultsFuture == null ? buildNoContent() : buildSearchResults(),
@@ -114,7 +106,8 @@ class UserResult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).primaryColor.withOpacity(0.7),
+      //color: Theme.of(context).primaryColor.withOpacity(0.7),
+      color: Colors.grey.withOpacity(0.2),
       child: Column(
         children: <Widget>[
           GestureDetector(
@@ -127,11 +120,11 @@ class UserResult extends StatelessWidget {
               title: Text(
                 user.displayName,
                 style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
               ),
               subtitle: Text(
                 user.username,
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black),
               ),
             ),
           ),

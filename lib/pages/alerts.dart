@@ -34,7 +34,7 @@ class _AlertsState extends State<Alerts> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: header(context, titleText: "Activity Feed"),
+      appBar: header(context, titleText: "Contact's Alerts"),
       body: Container(
           child: FutureBuilder(
         future: getAlertsFeed(),
@@ -51,6 +51,8 @@ class _AlertsState extends State<Alerts> {
   }
 }
 
+String alertsItemText = "";
+
 class AlertsItem extends StatelessWidget {
   late final String username;
   late final String userId;
@@ -58,6 +60,7 @@ class AlertsItem extends StatelessWidget {
   late final double latitude;
   late final double longitude;
   late final Timestamp timestamp;
+  late final String type;
 
   AlertsItem({
     required this.username,
@@ -66,6 +69,7 @@ class AlertsItem extends StatelessWidget {
     required this.latitude,
     required this.longitude,
     required this.timestamp,
+    required this.type,
   });
 
   factory AlertsItem.fromDocument(DocumentSnapshot doc) {
@@ -76,12 +80,23 @@ class AlertsItem extends StatelessWidget {
       latitude: doc['latitude'],
       longitude: doc['longitude'],
       timestamp: doc['timestamp'],
+      type: doc['type'],
     );
+  }
+
+  void configureMediaPreview(context) {
+    if (type == 'sos') {
+      alertsItemText = "is in danger! Tap to see the location of the alert";
+    } else if (type == 'notsafe') {
+      alertsItemText = "is not feeling safe!";
+    } else {
+      alertsItemText = "Error: Unknown type '$type'";
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    //configureMediaPreview(context);
+    configureMediaPreview(context);
 
     return Padding(
       padding: EdgeInsets.only(bottom: 2.0),
@@ -104,7 +119,7 @@ class AlertsItem extends StatelessWidget {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
-                      text: ' is in danger!',
+                      text: ' $alertsItemText',
                     ),
                   ]),
             ),
