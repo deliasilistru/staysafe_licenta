@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:staysafe_licenta/pages/home.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../models/user.dart';
@@ -116,7 +117,8 @@ class ActivityFeedItem extends StatelessWidget {
             backgroundImage: CachedNetworkImageProvider(userProfileImg),
           ),
           subtitle: Text(
-            timeago.format(timestamp.toDate()),
+            DateFormat('yyyy-MM-dd  kk:mm:ss').format(timestamp.toDate()),
+            //timeago.format(timestamp.toDate()),
             overflow: TextOverflow.ellipsis,
           ),
           trailing: Icon(Icons.pin_drop_outlined),

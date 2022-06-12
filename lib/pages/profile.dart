@@ -46,12 +46,12 @@ class _ProfileState extends State<Profile> {
   Container buildButton(
       {required String text, required VoidCallback function}) {
     return Container(
-      padding: EdgeInsets.only(top: 2.0),
+      padding: EdgeInsets.only(top: 8.0),
       child: TextButton(
         onPressed: function,
         child: Container(
           width: 250.0,
-          height: 27.0,
+          height: 37.0,
           child: Text(
             text,
             style: TextStyle(
@@ -65,7 +65,7 @@ class _ProfileState extends State<Profile> {
             border: Border.all(
               color: isContact ? Colors.grey : Colors.blue,
             ),
-            borderRadius: BorderRadius.circular(5.0),
+            borderRadius: BorderRadius.circular(10.0),
           ),
         ),
       ),
@@ -86,7 +86,23 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-  handleRemoveContact() {}
+  handleRemoveContact() {
+    setState(() {
+      isContact = false;
+    });
+    // Make auth user contact of THAT user (update THEIR contact collection)
+    contactsRef
+        .doc(widget.profileId)
+        .collection('userContacts')
+        .doc(currentUserId)
+        .delete();
+    // Put THAT user on YOUR following collection (update your following collection)
+    contactsRef
+        .doc(currentUserId)
+        .collection('userContacts')
+        .doc(widget.profileId)
+        .delete();
+  }
 
   handleAddContact() {
     setState(() {

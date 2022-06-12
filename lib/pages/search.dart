@@ -15,17 +15,37 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   TextEditingController searchController = TextEditingController();
   Future<QuerySnapshot>? searchResultsFuture;
+  List<User> results = [];
 
-  handleSearch(String query) {
-    Future<QuerySnapshot> users =
-        usersRef.where("displayName", isGreaterThanOrEqualTo: query).get();
+  Future<void> handleSearch(String query) async {
+    Future<QuerySnapshot> users = usersRef
+        .where("displayName".toLowerCase(), arrayContains: query.toLowerCase())
+        .get();
+    QuerySnapshot querySnapshot = await usersRef.get();
+    List<User> allUsers =
+        querySnapshot.docs.map((e) => User.fromDocument(e)).toList();
+
     setState(() {
+      results.addAll(allUsers.where((element) {
+        if (element.displayName.contains(query)) {
+          return true;
+        } else {
+          if (element.username.contains(query)) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      }));
       searchResultsFuture = users;
     });
   }
 
   clearSearch() {
-    searchController.clear();
+    setState(() {
+      searchController.clear();
+      results.clear();
+    });
   }
 
   AppBar buildSearchField() {
@@ -47,6 +67,11 @@ class _SearchState extends State<Search> {
           ),
         ),
         onFieldSubmitted: handleSearch,
+        onChanged: (string) {
+          setState(() {
+            results.clear();
+          });
+        },
       ),
     );
   }
@@ -69,22 +94,29 @@ class _SearchState extends State<Search> {
   }
 
   buildSearchResults() {
-    return FutureBuilder(
-        future: searchResultsFuture,
-        builder: (context, AsyncSnapshot snapshot) {
-          if (!snapshot.hasData) {
-            return circularProgress();
-          }
-          List<UserResult> searchResults = [];
-          snapshot.data?.docs.forEach((document) {
-            User user = User.fromDocument(document);
-            UserResult searchResult = UserResult(user);
-            searchResults.add(searchResult);
-          });
-          return ListView(
-            children: searchResults,
-          );
-        });
+    // return FutureBuilder(
+    //     future: searchResultsFuture,
+    //     builder: (context, AsyncSnapshot snapshot) {
+    //       if (!snapshot.hasData) {
+    //         return circularProgress();
+    //       }
+    //       List<UserResult> searchResults = [];
+    //       snapshot.data?.docs.forEach((document) {
+    //         User user = User.fromDocument(document);
+    //         UserResult searchResult = UserResult(user);
+    //         searchResults.add(searchResult);
+    //       });
+    //       return ListView(
+    //         children: searchResults,
+    //       );
+    //     });
+
+    return ListView.builder(
+      itemCount: results.length,
+      itemBuilder: (_, index) {
+        return UserResult(results[index]);
+      },
+    );
   }
 
   @override

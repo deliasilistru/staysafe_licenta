@@ -8,6 +8,7 @@ import '../models/user.dart';
 import '../widgets/header.dart';
 import '../widgets/progress.dart';
 import 'package:location/location.dart';
+import 'package:intl/intl.dart';
 
 class Alerts extends StatefulWidget {
   @override
@@ -128,7 +129,8 @@ class AlertsItem extends StatelessWidget {
             backgroundImage: CachedNetworkImageProvider(userProfileImg),
           ),
           subtitle: Text(
-            timeago.format(timestamp.toDate()),
+            DateFormat('yyyy-MM-dd  kk:mm:ss').format(timestamp.toDate()),
+            //timeago.format(timestamp.toDate()),
             overflow: TextOverflow.ellipsis,
           ),
           trailing: Icon(Icons.pin_drop),

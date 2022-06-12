@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'home.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
+import 'package:google_geocoding/google_geocoding.dart';
 
 class LocationMap extends StatefulWidget {
   late double latitude_contact;
@@ -25,6 +26,7 @@ class _LocationMapState extends State<LocationMap> {
 
   double _latitude = 0.1;
   double _longitude = 0.1;
+  List<GeocodingResult> reverseGeocodingResults = [];
 
   Future<void> _updatePosition() async {
     Position pos = await _determinePosition();
@@ -60,7 +62,29 @@ class _LocationMapState extends State<LocationMap> {
     return await Geolocator.getCurrentPosition();
   }
 
-  void _add() {
+  void _add() async {
+    String apiKey = 'AIzaSyAMaQbpp9zQ2cNnvTezTK-Zi1b7OAz6pIk';
+    LatLon latlng = LatLon(widget.latitude_contact, widget.longitude_contact);
+    GoogleGeocoding googleGeocoding = GoogleGeocoding(apiKey);
+    var response = await googleGeocoding.geocoding.getReverse(latlng);
+
+    if (response != null) {
+      if (mounted) {
+        setState(() {
+          reverseGeocodingResults = response.results!;
+        });
+      }
+    } else {
+      if (mounted) {
+        setState(() {
+          reverseGeocodingResults = [];
+        });
+      }
+    }
+
+    String? address = reverseGeocodingResults[0].formattedAddress;
+    print(address);
+
     final int markerCount = markers.length;
 
     if (markerCount == 12) {
@@ -74,7 +98,7 @@ class _LocationMapState extends State<LocationMap> {
     final Marker marker = Marker(
       markerId: markerId,
       position: LatLng(widget.latitude_contact, widget.longitude_contact),
-      infoWindow: InfoWindow(title: markerIdVal, snippet: '*'),
+      infoWindow: InfoWindow(title: address, snippet: ''),
       icon: BitmapDescriptor.defaultMarker,
     );
 
